@@ -3,6 +3,7 @@ import java.awt.event.* ;
 import javax.swing.* ;
 import javax.swing.table.* ;
 import javax.swing.event.* ;
+import java.util.*;
 
 /** L'application permettant de manipuler une JTable */
 public class AppliTable extends JFrame 
@@ -58,18 +59,6 @@ public class AppliTable extends JFrame
 	setBounds(400,200,800,400) ;
     }
 
-    public calculerPyramide()
-    {
-	Map<Integer, Integer> pyramide = new HashMap<Integer, Integer>();
-	for (int i=0;i<table.getColumnCount();i++) {
-	    int key = table.getValueAt(i,2);
-	    if (!pyramide.containsKey(key))
-		pyramide.put(key , 1);
-	    else
-		pyramide.put(key , pyramide.get(key)+1)
-	}
-    }
-
     class BoutonPyramide extends Button 
     {	
 	/** Le constructeur cree un bouton portant le nom adequat et ajoute a l'instance
@@ -83,9 +72,31 @@ public class AppliTable extends JFrame
 		{
 		    public void actionPerformed(ActionEvent e) 
 		    {
-			AppliTable.calculerPyramide() ;
+			calculerPyramide() ;
 		    }
 		});    
+	}
+
+	public void calculerPyramide()
+	{
+	    Map<Integer, Integer> pyramide = new HashMap<Integer, Integer>();
+	    for (int i=0;i<table.getColumnCount();i++) {
+		Integer key = (Integer)table.getValueAt(i,3);
+		if (!pyramide.containsKey(key))
+		    pyramide.put(key , 1);
+		else
+		    pyramide.put(key , pyramide.get(key)+1);
+	    }
+
+	    int i=0,j=0;
+	    //ça sa marche pas !
+	    for (Map.Entry<Integer, Integer> entry : pyramide.entrySet()) {
+		table2.setValueAt(""+entry.getKey(),i,j);
+		table2.setValueAt(""+entry.getValue(),i,++j);
+		++i;
+	    }
+
+	    //table2.setValueAt("1",0,0);
 	}
     } // fin de la classe interne BoutonPyramide
 }
